@@ -82,6 +82,11 @@ function loop() {
   ctx.fillRect(pipeX, pipeY + PIPE_GAP, PIPE_WIDTH, canvas.height - pipeY);
   pipeX -= 1.5;
 
+  if (pipeX < -50) {
+    pipeX = 400;
+    pipeY = Math.random() * (canvas.height - PIPE_GAP) + PIPE_WIDTH;
+  }
+
   requestAnimationFrame(loop);
 }
 
