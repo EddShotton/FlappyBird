@@ -2,6 +2,9 @@ body {
   background-color: #73c8a9;
   font-family: "Press Start", cursive;
   background-image: linear-gradient(to right, #73c8a9, #373b44);
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 canvas {
@@ -14,6 +17,10 @@ canvas {
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 1;
+}
+
+.backdrop-blur {
+  filter: blur(5px);
 }
 
 #end-menu {
