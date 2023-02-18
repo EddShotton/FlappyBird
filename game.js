@@ -32,6 +32,7 @@ let scoreDiv = document.getElementById("score-display");
 let score = 0;
 let highScore = 0;
 
+// Bird Input
 document.body.onkeyup = function (e) {
   if (e.code == "Space") {
     birdVelocity = FLAP_SPEED;
@@ -43,7 +44,50 @@ function increaseScore() {
 }
 
 function collisionCheck() {
-  //TODO
+  const birdBox = {
+    x: birdX,
+    y: birdY,
+    height: BIRD_HEIGHT,
+    width: BIRD_WIDTH,
+  };
+
+  const topPipeBox = {
+    x: pipeX,
+    y: pipeY - PIPE_GAP + BIRD_HEIGHT,
+    width: PIPE_WIDTH,
+    height: pipeY,
+  };
+
+  const bottomPipeBox = {
+    x: pipeX,
+    y: pipeY + PIPE_GAP + BIRD_HEIGHT,
+    width: PIPE_WIDTH,
+    height: canvas.height - pipeY + PIPE_GAP,
+  };
+
+  // Check For Collision With Upper Pipe
+  if (
+    birdBox.x + birdBox.width > topPipeBox.x &&
+    birdBox.x < topPipeBox.x + topPipeBox.width &&
+    birdBox.y < topPipeBox.y
+  ) {
+    return true;
+  }
+
+  // Check For Collision With Bottom Pipe
+  if (
+    birdBox.x + birdBox.width > bottomPipeBox.x &&
+    birdBox.x < bottomPipeBox.x + bottomPipeBox.width &&
+    birdBox.y + birdBox.height > bottomPipeBox.y
+  ) {
+    return true;
+  }
+
+  // Check For Collision With Boundries
+  if (birdY < 0 || birdY + BIRD_HEIGHT > canvas.height) {
+    return true;
+  }
+  return false;
 }
 
 function showEndMenu() {
@@ -82,9 +126,15 @@ function loop() {
   ctx.fillRect(pipeX, pipeY + PIPE_GAP, PIPE_WIDTH, canvas.height - pipeY);
   pipeX -= 1.5;
 
+  // Creates New Pipes With Random Heights
   if (pipeX < -50) {
     pipeX = 400;
     pipeY = Math.random() * (canvas.height - PIPE_GAP) + PIPE_WIDTH;
+  }
+
+  if (collisionCheck()) {
+    endGame();
+    return;
   }
 
   requestAnimationFrame(loop);
