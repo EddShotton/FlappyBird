@@ -39,8 +39,23 @@ document.body.onkeyup = function (e) {
   }
 };
 
+// Reset The Game If You Reach game-over
+document
+  .getElementById("restart-button")
+  .addEventListener("click", function () {
+    hideEndMenu();
+    resetGame();
+    loop();
+  });
+
 function increaseScore() {
-  //TODO
+  if (
+    birdX > pipeX + PIPE_WIDTH &&
+    (birdY < pipeY + PIPE_GAP || birdY + BIRD_HEIGHT > pipeY + PIPE_GAP)
+  ) {
+    score++;
+    scoreDiv.innerHTML = score;
+  }
 }
 
 function collisionCheck() {
@@ -93,7 +108,12 @@ function collisionCheck() {
 function showEndMenu() {
   document.getElementById("end-menu").style.display = "block";
   gameContainer.classList.add("backdrop-blur");
-  document.getElementById("endScore").innerHTML = score;
+  document.getElementById("end-score").innerHTML = score;
+
+  if (highScore > score) {
+    highScore = score;
+  }
+  document.getElementById("best-score").innerHTML = highScore;
 }
 
 function hideEndMenu() {
@@ -101,12 +121,21 @@ function hideEndMenu() {
   gameContainer.classList.remove("backdrop-blur");
 }
 
+// This Will Reset The Values Of The Score And the Bird
 function resetGame() {
-  //TODO
+  birdX = 50;
+  birdY = 50;
+  birdVelocity = 0;
+  birdAcceleration = 0.1;
+
+  pipeX = 400;
+  pipeY = canvas.height - 200;
+
+  score = 0;
 }
 
 function endGame() {
-  //TODO
+  showEndMenu();
 }
 
 function loop() {
@@ -137,6 +166,7 @@ function loop() {
     return;
   }
 
+  increaseScore();
   requestAnimationFrame(loop);
 }
 
