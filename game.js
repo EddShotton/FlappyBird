@@ -110,7 +110,7 @@ function showEndMenu() {
   gameContainer.classList.add("backdrop-blur");
   document.getElementById("end-score").innerHTML = score;
 
-  if (highScore > score) {
+  if (highScore < score) {
     highScore = score;
   }
   document.getElementById("best-score").innerHTML = highScore;
